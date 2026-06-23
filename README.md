@@ -42,7 +42,7 @@
 ### 方式二：源码运行
 ```
 # 克隆项目
-git clone <项目地址>
+git clone [<项目地址>](https://github.com/13429837441/scripts-manager-2.git)
 
 # 安装依赖
 npm install
