@@ -34,7 +34,7 @@
 
 ## 📦 安装方式
 ### 方式一：直接运行（推荐）
-在realses下载 ScriptManager.exe 后，将exe程序放到工程目录下双击即可运行：
+在Releases下载 ScriptManager.exe、scripts-manage-2.zip 后，将exe程序放到工程目录下双击即可运行：
 
 1. 程序会自动启动本地服务器
 2. 浏览器会自动打开管理界面
