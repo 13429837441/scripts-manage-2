@@ -1,0 +1,8 @@
+服务器运行在 http://localhost:3000
+按 Ctrl+C 停止服务器
+[DEBUG] 脚本对象: {"id":"1781625130546","name":"文件共享.py","type":"script","path":"D:\\IMRM\\Tools\\Library\\library\\locallshare\\app.py","ext":"py","pythonEnv":"python3"}
+[DEBUG] 脚本完整路径: D:\IMRM\Tools\Library\library\locallshare\app.py
+[DEBUG] 脚本扩展名: py
+[DEBUG] 文件是否存在: false
+[DEBUG] 执行命令: python3 "D:\IMRM\Tools\Library\library\locallshare\app.py"
+[DEBUG] Python环境: python3
