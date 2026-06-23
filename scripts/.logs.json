@@ -1,0 +1,159 @@
+[
+  {
+    "scriptId": "1781624640352",
+    "scriptName": "test_script",
+    "timestamp": "2026-06-18T04:00:09.675Z",
+    "success": true,
+    "exitCode": 0,
+    "output": "脚本开始执行...\r\nPython版本: 3.6.8 (tags/v3.6.8:3c6b436a57, Dec 24 2018, 00:16:47) [MSC v.1916 64 bit (AMD64)]\r\n执行时间: 2026-06-18 12:00:09\r\n脚本执行完成！"
+  },
+  {
+    "scriptId": "1781695958285",
+    "scriptName": "文件共享",
+    "timestamp": "2026-06-18T04:01:57.026Z",
+    "success": true,
+    "exitCode": null,
+    "output": "🚀 服务启动成功！\r\n🌐 访问地址: http://192.168.1.2:5000\r\n📱 在浏览器中打开上述地址，或使用手机扫描页面上的二维码\r\n * Serving Flask app 'app'\r\n * Debug mode: off\r\nWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.\r\n * Running on all addresses (0.0.0.0)\r\n * Running on http://127.0.0.1:5000\r\n * Running on http://28.0.0.1:5000\r\nPress CTRL+C to quit",
+    "triggeredBy": "cron"
+  },
+  {
+    "scriptId": "1781695958285",
+    "scriptName": "文件共享",
+    "timestamp": "2026-06-18T04:02:45.374Z",
+    "success": false,
+    "exitCode": -1,
+    "output": "脚本已被手动停止"
+  },
+  {
+    "scriptId": "1781695958285",
+    "scriptName": "文件共享",
+    "timestamp": "2026-06-18T04:02:45.671Z",
+    "success": false,
+    "exitCode": 1,
+    "output": "无输出",
+    "triggeredBy": "cron"
+  },
+  {
+    "scriptId": "1782121457901",
+    "scriptName": "清理缓存",
+    "timestamp": "2026-06-22T09:44:38.009Z",
+    "success": true,
+    "exitCode": null,
+    "output": "正在清理系统临时文件...\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\.ses\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\00e2991d-9a7f-4649-bbaf-dcf1e987cba1.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\0f00c821-3ed1-4d19-a748-aeb3ff45441d.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\0f50cd11-5557-4e21-8020-8ef804c5f58e.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\12d53950-4b12-42fa-a4fe-b036e8a8ab92.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\187add61-7184-4071-8d91-1733b33a3fde.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\197d4f66-3b2e-4344-a1cf-0596110d7e5f.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\29fe9f62-ac61-4513-863e-b66bffb887ee.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\2d14ae39-3af8-48da-84c1-9ce432eb1edb.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\2d6b22f7-86f8-4bc8-addf-f89020946164.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\35e8c103-cb11-43bd-b761-5468ca75160e.tmp\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\360se15.0.1395.0.cab\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\36dd6295-1687-4818-a4d3-fead6163fd48.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\3b5281cc-8cca-4f12-ad4e-941f091d7381.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\42e0322e-51c2-4f25-840f-f3dde5bb10ee.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\4391759b-b528-4fd4-a862-8c9b20939f85.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\48c78501-5b11-460f-ab00-5b9b9ab08478.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\53b22924-89a5-44e7-badf-0511ca8b816e.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\664a3ee9-0bb2-4abc-83ae-2b667dd9d28d.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\670ddf58-e208-4bc3-9e80-5b204734e377.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\692856a7-dacf-4870-845e-3e6589700888.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\7d789dd8-0346-41bd-837a-6ef17435ab2f.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\9b186152-3911-4c72-b36d-c0de06e9626a.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\9cd24c3f-ef76-4106-abb5-b1f3486bb5c5.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\9ec7aeae-2ee3-42c9-a367-e864ef040ef2.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\aef590eb-09d6-4787-8f45-b510b6afa839.tmp\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\au-descriptor-1.8.0_491-b10.xml\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\b1f2182b-3afa-4830-9ac5-18a9735afa87.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\bc833861-73c0-4285-b037-adb21797ab90.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\bdd54c68-cd09-430b-8f2e-eced29cd80b7.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\bfc86149-6f54-4a91-946d-57b1f6c66985.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\c69492ef-0917-4e46-9a70-dd4382918f50.tmp\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\catboost4j-prediction13282242947720116311.dll\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\catboost4j-prediction17396477798890560651.dll\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\catboost4j-prediction9037956898635092826.dll\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\cc314354-715c-47df-a679-ce7ecfbb7fd8.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\cda5ddef-03e9-4f77-8c28-12e107489f05.tmp\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\chrome_installer.log\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\config_temp\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\cv_debug.log\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\d28d514740b0d6ef2a386c157e3fb388-{87A94AB0-E370-4cde-98D3-ACC110C5967D}\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\dd3cc230-f85f-4169-a960-ab63e140df3c.tmp\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\dd_vcredist_x86_20260615140802.log\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\DeskGoUninst_20260622085759.Log\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\DeskGoUninst_20260622085800.Log\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\e88aea7e-1a81-4ba2-9938-f5bfddf3bd84.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\efbcad50-7a64-41a9-be2c-1d0ea6f28e4d.tmp\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\Evernote_exe_PID15072_2026615_126220095adb0.lck\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\exthost-094d71.cpuprofile\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\exthost-0d08ca.cpuprofile\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\exthost-1bbca3.cpuprofile\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\exthost-b73d00.cpuprofile\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\exthost-ceeb85.tar.gz\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\exthost-d7f919.tar.gz\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\exthost-e7b692.cpuprofile\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\exthost-f507e2.tar.gz\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\f89fcde8-e26a-4687-8a5f-db4c6f8e044b.tmp\r\nC:\\Users\\Lenovo\\AppData\\Local\\Temp\\fe5a1b99-9cd5-4a73-b308-aeaf8f74d09a.tmp\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\jb.station.ij.7796.sock\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\jusched.log\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\node-11208-1781622396974.tar.gz\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\node-11208-1781703532449.tar.gz\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\node-11208-1781710755143.tar.gz\r\nɾ���ļ� - C:\\Users\\Lenovo\\AppData\\Local\\Temp\\node-11208-1781714369509.tar.gz\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�\r\n��һ����������ʹ�ô��ļ��������޷����ʡ�"
+  },
+  {
+    "scriptId": "1781695958285",
+    "scriptName": "文件共享",
+    "timestamp": "2026-06-22T09:50:02.107Z",
+    "success": true,
+    "exitCode": null,
+    "output": "🚀 服务启动成功！\r\n🌐 访问地址: http://192.168.1.2:5000\r\n📱 在浏览器中打开上述地址，或使用手机扫描页面上的二维码\r\n * Serving Flask app 'app'\r\n * Debug mode: off",
+    "triggeredBy": "cron"
+  },
+  {
+    "scriptId": "1781695958285",
+    "scriptName": "文件共享",
+    "timestamp": "2026-06-22T10:52:02.137Z",
+    "success": true,
+    "exitCode": null,
+    "output": "🚀 服务启动成功！\r\n🌐 访问地址: http://192.168.1.2:5000\r\n📱 在浏览器中打开上述地址，或使用手机扫描页面上的二维码\r\n * Serving Flask app 'app'\r\n * Debug mode: off\r\nWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.\r\n * Running on all addresses (0.0.0.0)\r\n * Running on http://127.0.0.1:5000\r\n * Running on http://28.0.0.1:5000\r\nPress CTRL+C to quit",
+    "triggeredBy": "cron"
+  },
+  {
+    "scriptId": "1781695958285",
+    "scriptName": "文件共享",
+    "timestamp": "2026-06-22T10:52:35.995Z",
+    "success": false,
+    "exitCode": -1,
+    "output": "脚本已被手动停止"
+  },
+  {
+    "scriptId": "1781695958285",
+    "scriptName": "文件共享",
+    "timestamp": "2026-06-22T10:52:36.293Z",
+    "success": false,
+    "exitCode": 1,
+    "output": "无输出",
+    "triggeredBy": "cron"
+  },
+  {
+    "scriptId": "1782127838865",
+    "scriptName": "会员积分计算",
+    "timestamp": "2026-06-22T11:32:38.241Z",
+    "success": true,
+    "exitCode": null,
+    "output": "脚本已启动，正在运行中..."
+  },
+  {
+    "scriptId": "1782127838865",
+    "scriptName": "会员积分计算",
+    "timestamp": "2026-06-22T11:33:15.391Z",
+    "success": false,
+    "exitCode": -1,
+    "output": "脚本已被手动停止"
+  },
+  {
+    "scriptId": "1782127838865",
+    "scriptName": "会员积分计算",
+    "timestamp": "2026-06-22T11:33:16.442Z",
+    "success": false,
+    "exitCode": 1,
+    "output": "无输出"
+  },
+  {
+    "scriptId": "1782127838865",
+    "scriptName": "会员积分计算",
+    "timestamp": "2026-06-22T11:33:28.246Z",
+    "success": true,
+    "exitCode": null,
+    "output": "脚本已启动，正在运行中..."
+  },
+  {
+    "scriptId": "1782127838865",
+    "scriptName": "会员积分计算",
+    "timestamp": "2026-06-22T11:33:44.867Z",
+    "success": false,
+    "exitCode": -1,
+    "output": "脚本已被手动停止"
+  },
+  {
+    "scriptId": "1782127838865",
+    "scriptName": "会员积分计算",
+    "timestamp": "2026-06-22T11:33:45.116Z",
+    "success": false,
+    "exitCode": 1,
+    "output": "无输出"
+  },
+  {
+    "scriptId": "1781695958285",
+    "scriptName": "文件互传工具",
+    "timestamp": "2026-06-23T03:53:36.147Z",
+    "success": true,
+    "exitCode": null,
+    "output": "脚本已启动，正在运行中..."
+  },
+  {
+    "scriptId": "1781695958285",
+    "scriptName": "文件互传工具",
+    "timestamp": "2026-06-23T03:57:44.307Z",
+    "success": false,
+    "exitCode": -1,
+    "output": "脚本已被手动停止"
+  },
+  {
+    "scriptId": "1781695958285",
+    "scriptName": "文件互传工具",
+    "timestamp": "2026-06-23T03:57:45.072Z",
+    "success": false,
+    "exitCode": 1,
+    "output": "无输出"
+  },
+  {
+    "scriptId": "1781695958285",
+    "scriptName": "文件互传工具",
+    "timestamp": "2026-06-23T09:49:29.203Z",
+    "success": true,
+    "exitCode": null,
+    "output": "🚀 服务启动成功！\r\n🌐 访问地址: http://192.168.1.2:5000\r\n📱 在浏览器中打开上述地址，或使用手机扫描页面上的二维码\r\n * Serving Flask app 'app'\r\n * Debug mode: off\r\nWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.\r\n * Running on all addresses (0.0.0.0)\r\n * Running on http://127.0.0.1:5000\r\n * Running on http://28.0.0.1:5000\r\nPress CTRL+C to quit"
+  }
+]

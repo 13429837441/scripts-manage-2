@@ -1,0 +1,82 @@
+{
+  "pythonEnvs": [
+    {
+      "name": "python",
+      "command": "python"
+    },
+    {
+      "name": "Python 3.11",
+      "command": "python11"
+    },
+    {
+      "name": "Python 3.6",
+      "command": "python3"
+    },
+    {
+      "name": "Py Launcher 3",
+      "command": "py -3"
+    },
+    {
+      "name": "Py Launcher 3.11",
+      "command": "py -3.11"
+    }
+  ],
+  "cronExpressions": [
+    {
+      "expression": "0 0 0 * * *",
+      "description": "每天凌晨0点执行"
+    },
+    {
+      "expression": "0 0 6 * * *",
+      "description": "每天早上6点执行"
+    },
+    {
+      "expression": "0 0 9 * * *",
+      "description": "每天上午9点执行"
+    },
+    {
+      "expression": "0 0 12 * * *",
+      "description": "每天中午12点执行"
+    },
+    {
+      "expression": "0 0 18 * * *",
+      "description": "每天下午6点执行"
+    },
+    {
+      "expression": "0 0 22 * * *",
+      "description": "每天晚上10点执行"
+    },
+    {
+      "expression": "0 30 9 * * *",
+      "description": "每天上午9:30执行"
+    },
+    {
+      "expression": "0 0 9 * * 1-5",
+      "description": "周一到周五上午9点执行"
+    },
+    {
+      "expression": "0 0 0 * * 0",
+      "description": "每周日凌晨0点执行"
+    },
+    {
+      "expression": "0 0 0 1 * *",
+      "description": "每月1日凌晨0点执行"
+    },
+    {
+      "expression": "0 */30 * * * *",
+      "description": "每30分钟执行一次"
+    },
+    {
+      "expression": "0 */1 * * * *",
+      "description": "每小时执行一次"
+    },
+    {
+      "expression": "0 */2 * * * *",
+      "description": "每2小时执行一次"
+    },
+    {
+      "expression": "0 */6 * * * *",
+      "description": "每6小时执行一次"
+    }
+  ]
+}

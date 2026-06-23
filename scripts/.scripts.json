@@ -1,0 +1,33 @@
+{
+  "scripts": [
+    {
+      "id": "1781695958285",
+      "name": "文件互传工具",
+      "type": "script",
+      "path": "D:\\IMRMToolsLibrary\\localshare\\app.py",
+      "ext": "py",
+      "pythonEnv": "python11",
+      "description": "多端文件互传"
+    },
+    {
+      "id": "1782121457901",
+      "name": "清理缓存",
+      "type": "script",
+      "path": "D:\\test_bat.bat",
+      "ext": "bat",
+      "description": "清理临时文件",
+      "pythonEnv": null,
+      "createdAt": "2026-06-22T09:44:17.901Z"
+    },
+    {
+      "id": "1782127838865",
+      "name": "会员积分计算",
+      "type": "script",
+      "path": "D:\\Points_Calculator\\Points_Calculator.exe",
+      "ext": "exe",
+      "description": "计算会员积分工具",
+      "pythonEnv": null,
+      "createdAt": "2026-06-22T11:30:38.865Z"
+    }
+  ]
+}
