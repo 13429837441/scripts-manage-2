@@ -1,0 +1,28 @@
+{
+  "name": "scripts-manager",
+  "private": true,
+  "version": "1.0.0",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.cjs",
+    "build": "pkg server.cjs --target win-x64 --output ScriptManager.exe"
+  },
+  "dependencies": {
+    "express": "^4.22.2",
+    "node-schedule": "^2.1.1"
+  },
+  "devDependencies": {
+    "nexe": "^5.0.0-beta.4",
+    "pkg": "^5.8.1"
+  },
+  "pkg": {
+    "assets": [
+      "index.html",
+      "icon.png",
+      "scripts/**/*"
+    ],
+    "targets": [
+      "win-x64"
+    ]
+  }
+}
