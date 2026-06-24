@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>脚本管理工具</title>
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 50%, #16213e 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    
+    .cyber-border {
+      position: relative;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.1), inset 0 0 20px rgba(168, 85, 247, 0.05);
+    }
+    
+    .cyber-border-cyan {
+      position: relative;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.1), inset 0 0 20px rgba(6, 182, 212, 0.05);
+    }
+    
+    .cyber-gradient-text {
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .cyber-gradient-text-cyan {
+      background: linear-gradient(135deg, #06b6d4, #22c55e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .cyber-button {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cyber-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.3s;
+    }
+    
+    .cyber-button:hover::before {
+      left: 100%;
+    }
+    
+    .glow-purple {
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+    }
+    
+    .glow-pink {
+      box-shadow: 0 0 15px rgba(236, 72, 153, 0.5);
+    }
+    
+    .glow-green {
+      box-shadow: 0 0 15px rgba(34, 197, 94, 0.5);
+    }
+    
+    .scrollbar::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .scrollbar::-webkit-scrollbar-track {
+      background: linear-gradient(180deg, rgba(15, 10, 30, 0.8), rgba(30, 20, 50, 0.8));
+      border-radius: 4px;
+      border: 1px solid rgba(168, 85, 247, 0.2);
+    }
+    
+    .scrollbar::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #a855f7, #06b6d4);
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(6, 182, 212, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .scrollbar::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #c084fc, #22d3ee);
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.7), 0 0 30px rgba(6, 182, 212, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.3);
+      transform: scaleX(1.1);
+    }
+    
+    .scrollbar::-webkit-scrollbar-corner {
+      background: rgba(15, 10, 30, 0.8);
+    }
+    
+    .scrollbar {
+      scrollbar-width: thin;
+      scrollbar-color: #a855f7 rgba(15, 10, 30, 0.8);
+    }
+    
+    .tree-node {
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 12px;
+    }
+    
+    .tree-node:hover {
+      background: rgba(168, 85, 247, 0.2);
+    }
+    
+    .tree-node.selected {
+      background: rgba(168, 85, 247, 0.3);
+      border-left: 3px solid #a855f7;
+    }
+    
+    .tree-node.selected-cyan {
+      background: rgba(6, 182, 212, 0.2);
+      border-left: 3px solid #06b6d4;
+    }
+    
+    .hover\:glow-purple:hover {
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+    }
+    
+    .hover\:glow-red:hover {
+      box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+    }
+    
+    .hover\:text-white:hover {
+      color: white;
+    }
+    
+    .cyber-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .cyber-modal {
+      position: relative;
+      width: 480px;
+      max-width: 90vw;
+      background: linear-gradient(145deg, rgba(15, 10, 30, 0.95), rgba(30, 20, 50, 0.95));
+      border: 1px solid rgba(168, 85, 247, 0.5);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 
+        0 0 30px rgba(168, 85, 247, 0.3),
+        0 0 60px rgba(6, 182, 212, 0.2),
+        inset 0 0 60px rgba(0, 0, 0, 0.5);
+      animation: slideIn 0.3s ease;
+    }
+    
+    .cyber-modal::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      right: -1px;
+      bottom: -1px;
+      background: linear-gradient(135deg, #a855f7, #06b6d4, #ec4899, #a855f7);
+      background-size: 400% 400%;
+      border-radius: 16px;
+      z-index: -1;
+      animation: borderGlow 3s ease infinite;
+    }
+    
+    .cyber-modal-header {
+      padding: 20px;
+      border-bottom: 1px solid rgba(168, 85, 247, 0.3);
+      background: rgba(168, 85, 247, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+    
+    .cyber-modal-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #a855f7, #06b6d4, #a855f7, transparent);
+    }
+    
+    .cyber-modal-title {
+      font-size: 18px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #a855f7, #06b6d4, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+    }
+    
+    .cyber-modal-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(236, 72, 153, 0.1);
+      border: 1px solid rgba(236, 72, 153, 0.3);
+      color: #ec4899;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .cyber-modal-close:hover {
+      background: rgba(236, 72, 153, 0.3);
+      box-shadow: 0 0 15px rgba(236, 72, 153, 0.5);
+      transform: scale(1.1);
+    }
+    
+    .cyber-modal-body {
+      padding: 24px;
+      position: relative;
+    }
+    
+    .cyber-modal-body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(168, 85, 247, 0.02) 0%, transparent 50%, rgba(6, 182, 212, 0.02) 100%);
+      pointer-events: none;
+    }
+    
+    .cyber-modal-footer {
+      padding: 20px;
+      border-top: 1px solid rgba(168, 85, 247, 0.3);
+      background: rgba(6, 182, 212, 0.05);
+      display: flex;
+      gap: 12px;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideIn {
+      from { 
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+      }
+      to { 
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+    
+    @keyframes borderGlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+      50% { opacity: 0.5; box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+    }
+
+    @keyframes toastIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes toastOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
+    }
+
+    .cyber-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 16px 20px;
+      border-radius: 12px;
+      background: linear-gradient(145deg, rgba(15, 10, 30, 0.95), rgba(30, 20, 50, 0.95));
+      border: 1px solid rgba(168, 85, 247, 0.5);
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.3), 0 0 40px rgba(6, 182, 212, 0.2);
+      animation: toastIn 0.3s ease;
+      z-index: 9999;
+      max-width: 320px;
+    }
+
+    .cyber-toast.hiding {
+      animation: toastOut 0.3s ease forwards;
+    }
+
+    .cyber-toast-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: #22c55e;
+      margin-bottom: 4px;
+    }
+
+    .cyber-toast-message {
+      font-size: 13px;
+      color: #d1d5db;
+    }
+
+    .cyber-toast-time {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 6px;
+    }
+    
+    .hover\:bg-white\/5:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+  </style>
+</head>
+<body>
+  <div style="width: 100%; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
+    <div style="position: relative; width: 100%; max-width: 1200px; height: calc(100vh - 40px); border-radius: 16px; overflow: hidden;">
+      <div style="position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, #a855f7, transparent);"></div>
+      <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, #06b6d4, transparent);"></div>
+      <div style="position: absolute; top: 0; bottom: 0; left: 0; width: 1px; background: linear-gradient(180deg, transparent, #a855f7, transparent);"></div>
+      <div style="position: absolute; top: 0; bottom: 0; right: 0; width: 1px; background: linear-gradient(180deg, transparent, #06b6d4, transparent);"></div>
+      
+      <div style="position: absolute; top: 8px; left: 8px; width: 12px; height: 12px; border-left: 2px solid #a855f7; border-top: 2px solid #a855f7;"></div>
+      <div style="position: absolute; top: 8px; right: 8px; width: 12px; height: 12px; border-right: 2px solid #06b6d4; border-top: 2px solid #06b6d4;"></div>
+      <div style="position: absolute; bottom: 8px; left: 8px; width: 12px; height: 12px; border-left: 2px solid #06b6d4; border-bottom: 2px solid #06b6d4;"></div>
+      <div style="position: absolute; bottom: 8px; right: 8px; width: 12px; height: 12px; border-right: 2px solid #a855f7; border-bottom: 2px solid #a855f7;"></div>
+      
+      <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(10, 10, 26, 0.9); border-bottom: 1px solid #2d1b4e;">
+        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ef4444;"></div>
+        <div style="width: 12px; height: 12px; border-radius: 50%; background: #eab308;"></div>
+        <div style="width: 12px; height: 12px; border-radius: 50%; background: #22c55e;"></div>
+        <span style="margin-left: 16px; color: #9ca3af; font-size: 14px;">脚本管理工具</span>
+      </div>
+      
+      <div style="display: flex; height: 100%; padding-top: 44px;">
+        <aside style="width: 224px; border-right: 1px solid rgba(168, 85, 247, 0.3); background: rgba(10, 10, 26, 0.8); border-radius: 12px 0 0 12px; display: flex; flex-direction: column; margin: 8px 0 8px 8px;">
+          <div style="padding: 16px; border-bottom: 1px solid #2d1b4e;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <img src="/icon.png" style="width: 32px; height: 32px; border-radius: 8px;" alt="图标">
+              <span style="color: white; font-weight: bold; font-size: 18px;" class="cyber-gradient-text">脚本管理</span>
+            </div>
+          </div>
+          
+          <nav style="flex: 1; padding: 8px; overflow-y: auto;" class="scrollbar">
+            <ul style="list-style: none;">
+              <li style="margin-bottom: 4px;">
+                <button id="nav-manage" onclick="switchNav('manage')" style="width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 8px; transition: all 0.3s; background: rgba(168, 85, 247, 0.2); color: white; border: none; cursor: pointer; font-weight: 500;" class="cyber-button glow-purple">
+                  <span style="width: 20px; text-align: center;"><i class="fa-solid fa-folder-open"></i></span>
+                  <span>脚本管理</span>
+                </button>
+              </li>
+              <li style="margin-bottom: 4px;">
+                <button id="nav-invoke" onclick="switchNav('invoke')" style="width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 8px; transition: all 0.3s; background: transparent; color: #9ca3af; border: none; cursor: pointer; font-weight: 500;" class="cyber-button hover:text-white hover:bg-white/5">
+                  <span style="width: 20px; text-align: center;"><i class="fa-solid fa-play"></i></span>
+                  <span>脚本调用</span>
+                </button>
+              </li>
+              <li style="margin-bottom: 4px;">
+                <button id="nav-cron" onclick="switchNav('cron')" style="width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 8px; transition: all 0.3s; background: transparent; color: #9ca3af; border: none; cursor: pointer; font-weight: 500;" class="cyber-button hover:text-white hover:bg-white/5">
+                  <span style="width: 20px; text-align: center;"><i class="fa-solid fa-clock"></i></span>
+                  <span>定时任务</span>
+                </button>
+              </li>
+              <li style="margin-bottom: 4px;">
+                <button id="nav-logs" onclick="switchNav('logs')" style="width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 8px; transition: all 0.3s; background: transparent; color: #9ca3af; border: none; cursor: pointer; font-weight: 500;" class="cyber-button hover:text-white hover:bg-white/5">
+                  <span style="width: 20px; text-align: center;"><i class="fa-solid fa-file-text"></i></span>
+                  <span>执行日志</span>
+                </button>
+              </li>
+              <li style="margin-bottom: 4px;">
+                <button id="nav-settings" onclick="switchNav('settings')" style="width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 8px; transition: all 0.3s; background: transparent; color: #9ca3af; border: none; cursor: pointer; font-weight: 500;" class="cyber-button hover:text-white hover:bg-white/5">
+                  <span style="width: 20px; text-align: center;"><i class="fa-solid fa-gear"></i></span>
+                  <span>设置</span>
+                </button>
+              </li>
+              <li style="margin-top: auto;">
+                <button onclick="exitApp()" style="width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 8px; transition: all 0.3s; background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #ef4444; border: none; cursor: pointer; font-weight: 500;" class="cyber-button hover:bg-red-500/20">
+                  <span style="width: 20px; text-align: center;"><i class="fa-solid fa-power-off"></i></span>
+                  <span>退出程序</span>
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </aside>
+        
+        <div style="flex: 1; margin: 8px; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column;" class="cyber-border-cyan">
+          <div style="display: flex; border-bottom: 1px solid #2d1b4e;">
+            <button id="tab-manage" onclick="switchTab('manage')" style="flex: 1; padding: 12px 24px; text-align: center; font-size: 14px; font-weight: 500; border: none; cursor: pointer; transition: all 0.3s; background: rgba(168, 85, 247, 0.2); color: white; border-bottom: 2px solid #a855f7;" class="hover:text-white hover:bg-white/5">
+              脚本管理
+            </button>
+            <button id="tab-invoke" onclick="switchTab('invoke')" style="flex: 1; padding: 12px 24px; text-align: center; font-size: 14px; font-weight: 500; border: none; cursor: pointer; transition: all 0.3s; background: transparent; color: #9ca3af;" class="hover:text-white hover:bg-white/5">
+              脚本调用
+            </button>
+            <button id="tab-cron" onclick="switchTab('cron')" style="flex: 1; padding: 12px 24px; text-align: center; font-size: 14px; font-weight: 500; border: none; cursor: pointer; transition: all 0.3s; background: transparent; color: #9ca3af;" class="hover:text-white hover:bg-white/5">
+              定时任务
+            </button>
+            <button id="tab-logs" onclick="switchTab('logs')" style="flex: 1; padding: 12px 24px; text-align: center; font-size: 14px; font-weight: 500; border: none; cursor: pointer; transition: all 0.3s; background: transparent; color: #9ca3af;" class="hover:text-white hover:bg-white/5">
+              执行日志
+            </button>
+            <button id="tab-settings" onclick="switchTab('settings')" style="flex: 1; padding: 12px 24px; text-align: center; font-size: 14px; font-weight: 500; border: none; cursor: pointer; transition: all 0.3s; background: transparent; color: #9ca3af;" class="hover:text-white hover:bg-white/5">
+              设置
+            </button>
+          </div>
+          
+          <div id="page-manage" style="flex: 1; display: flex; padding: 12px; min-height: 0; overflow: hidden;">
+            <div style="flex: 1; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; min-height: 0;" class="cyber-border">
+              <div style="padding: 16px; border-bottom: 1px solid #2d1b4e; display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="color: white; font-weight: bold; font-size: 16px;" class="cyber-gradient-text-cyan">脚本列表</h2>
+                <button onclick="openCreateModal()" style="padding: 6px 12px; border-radius: 6px; background: rgba(168, 85, 247, 0.2); border: 1px solid #a855f7; color: white; font-size: 12px; cursor: pointer; transition: all 0.3s;" class="cyber-button hover:glow-purple">
+                  + 新增脚本
+                </button>
+              </div>
+              
+              <div style="flex: 1; overflow-y: auto; padding: 12px;" class="scrollbar" id="script-list">
+              </div>
+            </div>
+            
+            <div style="width: 288px; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; margin-left: 12px;" class="cyber-border-cyan">
+              <div style="padding: 16px; border-bottom: 1px solid #2d1b4e;">
+                <h2 style="color: white; font-weight: bold; font-size: 16px;" class="cyber-gradient-text-cyan">操作区</h2>
+              </div>
+              
+              <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; gap: 16px;">
+                <button onclick="editScript()" style="width: 112px; height: 112px; clip-path: polygon(20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%, 0% 50%); background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(6, 182, 212, 0.3)); border: 2px solid #22c55e; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: all 0.3s;" class="cyber-button hover:glow-purple">
+                  <i class="fa-solid fa-pen-to-square" style="font-size: 40px; color: #22c55e;"></i>
+                  <span style="color: #22c55e; font-size: 12px;">编辑</span>
+                </button>
+                
+                <button onclick="deleteScript()" style="width: 112px; height: 112px; clip-path: polygon(20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%, 0% 50%); background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(236, 72, 153, 0.3)); border: 2px solid #ef4444; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: all 0.3s;" class="cyber-button hover:glow-pink">
+                  <i class="fa-solid fa-trash" style="font-size: 40px; color: #ef4444;"></i>
+                  <span style="color: #ef4444; font-size: 12px;">删除</span>
+                </button>
+              </div>
+              
+              <div style="padding: 16px; border-top: 1px solid #2d1b4e;">
+                <div id="script-detail" style="color: #9ca3af; font-size: 12px;">
+                  <p>选择脚本查看详情</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div id="page-invoke" style="flex: 1; display: none; padding: 12px; min-height: 0; overflow: hidden;">
+            <div style="flex: 1; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; min-height: 0;" class="cyber-border">
+              <div style="padding: 16px; border-bottom: 1px solid #2d1b4e;">
+                <h2 style="color: white; font-weight: bold; font-size: 16px;" class="cyber-gradient-text-cyan">脚本调用</h2>
+              </div>
+              
+              <div style="flex: 1; overflow-y: auto; padding: 12px;" class="scrollbar" id="invoke-script-list">
+              </div>
+            </div>
+          </div>
+          
+          <div id="page-logs" style="flex: 1; display: none; padding: 12px;">
+            <div style="border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; height: 100%; width: stretch" class="cyber-border">
+              <div style="padding: 16px; border-bottom: 1px solid #2d1b4e; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+                <h2 style="color: white; font-weight: bold; font-size: 16px;" class="cyber-gradient-text-cyan">执行日志</h2>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <select id="log-script-select" onchange="renderLogs()" style="padding: 6px 12px; border-radius: 6px; background: rgba(0, 0, 0, 0.3); border: 1px solid #2d1b4e; color: white; font-size: 12px; outline: none;">
+                    <option value="">所有脚本</option>
+                  </select>
+                  <button onclick="loadLogs()" style="padding: 6px 12px; border-radius: 6px; background: rgba(168, 85, 247, 0.2); border: 1px solid #a855f7; color: white; font-size: 12px; cursor: pointer;" class="hover:glow-purple">刷新</button>
+                  <button onclick="clearLogs()" style="padding: 6px 12px; border-radius: 6px; background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: white; font-size: 12px; cursor: pointer;">清空</button>
+                </div>
+              </div>
+              
+              <div style="height: calc(100vh - 230px); overflow-y: auto; padding: 16px;" class="scrollbar" id="logs-container">
+                <div style="text-align: center; color: #6b7280; padding: 40px;">暂无执行日志</div>
+              </div>
+            </div>
+          </div>
+          
+          <div id="page-settings" style="flex: 1; display: none; padding: 12px; overflow: hidden;">
+            <div style="height: 100%; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; width: stretch" class="cyber-border">
+              <div style="padding: 16px; border-bottom: 1px solid #2d1b4e;">
+                <h2 style="color: white; font-weight: bold; font-size: 16px;" class="cyber-gradient-text-cyan">Python 环境配置</h2>
+              </div>
+              
+              <div style="flex: 1; overflow-y: auto; padding: 24px;">
+                <div style="margin-bottom: 24px;">
+                  <label style="color: #9ca3af; font-size: 12px; margin-bottom: 8px; display: block;">自定义 Python 环境（每行一个，格式：显示名称|命令）</label>
+                  <textarea id="settings-python-envs" rows="6" placeholder="例如：&#10;python3|python3&#10;Python 3.11|python3.11&#10;Py Launcher|py -3" style="width: 100%; padding: 12px; border-radius: 8px; background: rgba(0, 0, 0, 0.3); border: 1px solid #2d1b4e; color: white; font-size: 14px; font-family: 'Consolas', monospace; outline: none; resize: vertical; transition: all 0.3s;" onfocus="this.style.borderColor='#a855f7'" class="scrollbar"></textarea>
+                  <p style="color: #6b7280; font-size: 11px; margin-top: 8px;">每行一个环境配置，格式为"显示名称|命令"，例如：python3|python3</p>
+                </div>
+                
+                <div style="margin-bottom: 24px;">
+                  <label style="color: #9ca3af; font-size: 12px; margin-bottom: 8px; display: block;">常用 Cron 表达式（每行一个，格式：表达式|描述）</label>
+                  <textarea id="settings-cron-exprs" rows="8" placeholder="例如：&#10;0 0 * * *|每天凌晨执行&#10;0 30 9 * *|每天上午9:30执行" style="width: 100%; padding: 12px; border-radius: 8px; background: rgba(0, 0, 0, 0.3); border: 1px solid #2d1b4e; color: white; font-size: 14px; font-family: 'Consolas', monospace; outline: none; resize: vertical; transition: all 0.3s;" onfocus="this.style.borderColor='#a855f7'" class="scrollbar"></textarea>
+                  <p style="color: #6b7280; font-size: 11px; margin-top: 8px;">格式：秒 分 时 日 月 周，例如：0 0 2 * * * 表示每天凌晨2点执行</p>
+                </div>
+                
+                <div style="display: flex; gap: 12px;">
+                  <button onclick="saveSettings()" style="padding: 10px 24px; border-radius: 8px; background: linear-gradient(135deg, #a855f7, #ec4899); border: none; color: white; font-size: 14px; cursor: pointer; transition: all 0.3s;" class="cyber-button hover:glow-purple">保存配置</button>
+                  <button onclick="loadSettings()" style="padding: 10px 24px; border-radius: 8px; background: rgba(168, 85, 247, 0.2); border: 1px solid #a855f7; color: white; font-size: 14px; cursor: pointer; transition: all 0.3s;" class="cyber-button hover:glow-purple">重新加载</button>
+                </div>
+                
+                <div id="settings-message" style="margin-top: 16px; padding: 12px; border-radius: 8px; display: none;"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div id="page-cron" style="flex: 1; display: none; padding: 12px; overflow: hidden;">
+            <div style="height: 100%; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; width: stretch" class="cyber-border">
+              <div style="padding: 16px; border-bottom: 1px solid #2d1b4e; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+                <h2 style="color: white; font-weight: bold; font-size: 16px;" class="cyber-gradient-text-cyan">定时任务列表</h2>
+                <button onclick="loadCronTasks()" style="padding: 8px 16px; border-radius: 6px; background: rgba(168, 85, 247, 0.2); border: 1px solid #a855f7; color: white; font-size: 13px; cursor: pointer;" class="hover:glow-purple">刷新</button>
+              </div>
+              
+              <div style="flex: 1; overflow-y: auto; padding: 16px;" id="cron-page-list">
+                <div style="color: #6b7280; font-size: 14px; text-align: center; padding: 40px;">正在加载...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-overlay" style="display: none;" class="cyber-modal-overlay">
+    <div class="cyber-modal">
+      <div class="cyber-modal-header">
+        <h3 id="modal-title" class="cyber-modal-title">新增脚本</h3>
+        <button onclick="closeModal()" class="cyber-modal-close">×</button>
+      </div>
+      <div class="cyber-modal-body">
+        <div style="margin-bottom: 16px;">
+          <label style="color: #9ca3af; font-size: 12px; margin-bottom: 4px; display: block;">脚本名称</label>
+          <input type="text" id="script-name" placeholder="输入脚本名称" style="width: 100%; padding: 10px 12px; border-radius: 6px; background: rgba(0, 0, 0, 0.3); border: 1px solid #2d1b4e; color: white; font-size: 14px; outline: none; transition: all 0.3s;" onfocus="this.style.borderColor='#a855f7'">
+        </div>
+        <div style="margin-bottom: 16px;">
+          <label style="color: #9ca3af; font-size: 12px; margin-bottom: 4px; display: block;">脚本文件路径</label>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="script-folder" placeholder="点击右侧按钮选择文件" style="flex: 1; padding: 10px 12px; border-radius: 6px; background: rgba(0, 0, 0, 0.3); border: 1px solid #2d1b4e; color: white; font-size: 14px; outline: none; transition: all 0.3s;" onfocus="this.style.borderColor='#a855f7'">
+            <button onclick="openFileBrowser()" style="padding: 10px 16px; border-radius: 6px; background: rgba(168, 85, 247, 0.2); border: 1px solid #a855f7; color: white; font-size: 14px; cursor: pointer; transition: all 0.3s; white-space: nowrap;" class="cyber-button hover:glow-purple">选择文件</button>
+          </div>
+        </div>
+        <div style="margin-bottom: 16px;">
+          <label style="color: #9ca3af; font-size: 12px; margin-bottom: 4px; display: block;">功能描述</label>
+          <textarea id="script-description" placeholder="简要描述脚本功能" rows="3" style="width: 100%; padding: 10px 12px; border-radius: 6px; background: rgba(0, 0, 0, 0.3); border: 1px solid #2d1b4e; color: white; font-size: 14px; outline: none; transition: all 0.3s; resize: none;" onfocus="this.style.borderColor='#a855f7'"></textarea>
+        </div>
+        <div style="margin-bottom: 16px;">
+          <label style="color: #9ca3af; font-size: 12px; margin-bottom: 4px; display: block;">脚本类型</label>
+          <select id="script-ext" onchange="togglePythonEnv()" style="width: 100%; padding: 10px 12px; border-radius: 6px; background: rgba(0, 0, 0, 0.3); border: 1px solid #2d1b4e; color: white; font-size: 14px; outline: none; transition: all 0.3s;" onfocus="this.style.borderColor='#a855f7'">
+            <option value="ps1">PowerShell (.ps1)</option>
+            <option value="py">Python (.py)</option>
+            <option value="js">Node.js (.js)</option>
+            <option value="bat">批处理 (.bat)</option>
+            <option value="cmd">CMD (.cmd)</option>
+            <option value="exe">可执行文件 (.exe)</option>
+            <option value="sh">Shell (.sh)</option>
+            <option value="rb">Ruby (.rb)</option>
+            <option value="php">PHP (.php)</option>
+            <option value="pl">Perl (.pl)</option>
+            <option value="vbs">VBScript (.vbs)</option>
+            <option value="mjs">ES Module (.mjs)</option>
+            <option value="cjs">CommonJS (.cjs)</option>
+          </select>
+        </div>
+        <div id="python-env-section" style="margin-bottom: 8px; display: none;">
+          <label style="color: #9ca3af; font-size: 12px; margin-bottom: 4px; display: block;">Python 环境</label>
+          <select id="script-python-env" style="width: 100%; padding: 10px 12px; border-radius: 6px; background: rgba(0, 0, 0, 0.3); border: 1px solid #2d1b4e; color: white; font-size: 14px; outline: none; transition: all 0.3s;" onfocus="this.style.borderColor='#a855f7'">
+            <option value="python">默认 Python</option>
+          </select>
+        </div>
+      </div>
+      <div class="cyber-modal-footer">
+        <button onclick="closeModal()" style="flex: 1; padding: 10px; border-radius: 6px; background: rgba(168, 85, 247, 0.2); border: 1px solid #a855f7; color: white; font-size: 14px; cursor: pointer; transition: all 0.3s;" class="cyber-button hover:glow-purple">取消</button>
+        <button id="modal-submit" onclick="submitScript()" style="flex: 1; padding: 10px; border-radius: 6px; background: linear-gradient(135deg, #a855f7, #ec4899); border: none; color: white; font-size: 14px; cursor: pointer; transition: all 0.3s;" class="cyber-button hover:glow-purple">确定</button>
+      </div>
+    </div>
+  </div>
+  
+  <div id="cron-modal-overlay" style="display: none;" class="cyber-modal-overlay">
+    <div class="cyber-modal">
+      <div class="cyber-modal-header">
+        <h3 id="cron-modal-title" class="cyber-modal-title">定时任务设置</h3>
+        <button onclick="closeCronModal()" class="cyber-modal-close">×</button>
+      </div>
+      <div class="cyber-modal-body">
+        <div style="margin-bottom: 16px;">
+          <label style="color: #9ca3af; font-size: 12px; margin-bottom: 4px; display: block;">执行脚本</label>
+          <select id="cron-script-select" style="width: 100%; padding: 10px 12px; border-radius: 6px; background: rgba(0, 0, 0, 0.3); border: 1px solid #2d1b4e; color: white; font-size: 14px; outline: none; transition: all 0.3s;" onfocus="this.style.borderColor='#a855f7'">
+            <option value="">请选择脚本</option>
+          </select>
+        </div>
+        <div style="margin-bottom: 16px;">
+          <label style="color: #9ca3af; font-size: 12px; margin-bottom: 4px; display: block;">定时类型</label>
+          <select id="cron-type" onchange="toggleCronType()" style="width: 100%; padding: 10px 12px; border-radius: 6px; background: rgba(0, 0, 0, 0.3); border: 1px solid #2d1b4e; color: white; font-size: 14px; outline: none; transition: all 0.3s;" onfocus="this.style.borderColor='#a855f7'">
+            <option value="interval">间隔执行</option>
+            <option value="cron">Cron 表达式</option>
+            <option value="delay">延迟执行</option>
+          </select>
+        </div>
+        <div id="cron-interval-section" style="margin-bottom: 16px;">
+          <label style="color: #9ca3af; font-size: 12px; margin-bottom: 4px; display: block;">执行间隔（分钟）</label>
+          <input type="number" id="cron-interval" placeholder="例如：60" value="60" min="1" style="width: 100%; padding: 10px 12px; border-radius: 6px; background: rgba(0, 0, 0, 0.3); border: 1px solid #2d1b4e; color: white; font-size: 14px; outline: none; transition: all 0.3s;" onfocus="this.style.borderColor='#a855f7'">
+        </div>
+        <div id="cron-expression-section" style="margin-bottom: 16px; display: none;">
+          <label style="color: #9ca3af; font-size: 12px; margin-bottom: 4px; display: block;">Cron 表达式</label>
+          <input type="text" id="cron-expression" list="cron-expression-list" placeholder="选择或输入表达式" style="width: 100%; padding: 10px 12px; border-radius: 6px; background: rgba(0, 0, 0, 0.3); border: 1px solid #2d1b4e; color: white; font-size: 14px; font-family: 'Consolas', monospace; outline: none; transition: all 0.3s;" onfocus="this.style.borderColor='#a855f7'">
+          <datalist id="cron-expression-list"></datalist>
+          <p style="color: #6b7280; font-size: 11px; margin-top: 8px;">格式：秒 分 时 日 月 周，可从下拉列表选择或手动输入</p>
+        </div>
+        <div id="cron-delay-section" style="margin-bottom: 16px; display: none;">
+          <label style="color: #9ca3af; font-size: 12px; margin-bottom: 4px; display: block;">延迟时长（分钟）</label>
+          <input type="number" id="cron-delay" placeholder="例如：5" value="5" min="1" style="width: 100%; padding: 10px 12px; border-radius: 6px; background: rgba(0, 0, 0, 0.3); border: 1px solid #2d1b4e; color: white; font-size: 14px; outline: none; transition: all 0.3s;" onfocus="this.style.borderColor='#a855f7'">
+          <p style="color: #6b7280; font-size: 11px; margin-top: 8px;">设置延迟时间后，脚本将在指定时间后执行一次</p>
+        </div>
+      </div>
+      <div class="cyber-modal-footer">
+        <button onclick="closeCronModal()" style="flex: 1; padding: 10px; border-radius: 6px; background: rgba(168, 85, 247, 0.2); border: 1px solid #a855f7; color: white; font-size: 14px; cursor: pointer; transition: all 0.3s;" class="cyber-button hover:glow-purple">取消</button>
+        <button onclick="saveCronTask()" style="flex: 1; padding: 10px; border-radius: 6px; background: linear-gradient(135deg, #a855f7, #ec4899); border: none; color: white; font-size: 14px; cursor: pointer; transition: all 0.3s;" class="cyber-button hover:glow-purple">保存</button>
+      </div>
+    </div>
+  </div>
+  
+  <div id="file-browser-overlay" style="display: none;" class="cyber-modal-overlay">
+    <div class="cyber-modal" style="width: 600px;">
+      <div class="cyber-modal-header">
+        <h3 class="cyber-modal-title">选择脚本文件</h3>
+        <button onclick="closeFileBrowser()" class="cyber-modal-close">×</button>
+      </div>
+      <div class="cyber-modal-body" style="padding: 0;">
+        <div style="display: flex; align-items: center; padding: 10px 16px; background: rgba(0, 0, 0, 0.3); border-bottom: 1px solid #2d1b4e;">
+          <button onclick="browseParent()" style="margin-right: 8px; padding: 4px 8px; border-radius: 4px; background: rgba(168, 85, 247, 0.2); border: 1px solid #a855f7; color: white; font-size: 12px; cursor: pointer;">↑</button>
+          <button onclick="browseDrives()" style="margin-right: 8px; padding: 4px 8px; border-radius: 4px; background: rgba(168, 85, 247, 0.2); border: 1px solid #a855f7; color: white; font-size: 12px; cursor: pointer;">盘符</button>
+          <div id="file-browser-path" style="flex: 1; color: #a855f7; font-size: 12px; font-family: 'Consolas', monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"></div>
+        </div>
+        <div id="file-browser-list" style="height: 300px; overflow-y: auto; padding: 8px; background: rgba(0, 0, 0, 0.2);">
+        </div>
+      </div>
+      <div class="cyber-modal-footer">
+        <button onclick="closeFileBrowser()" style="flex: 1; padding: 10px; border-radius: 6px; background: rgba(168, 85, 247, 0.2); border: 1px solid #a855f7; color: white; font-size: 14px; cursor: pointer; transition: all 0.3s;" class="cyber-button hover:glow-purple">取消</button>
+      </div>
+    </div>
+  </div>
+  
+  <div id="cyber-alert-overlay" style="display: none;" class="cyber-modal-overlay">
+    <div class="cyber-modal" style="width: 400px;">
+      <div class="cyber-modal-header">
+        <h3 class="cyber-modal-title">提示</h3>
+        <button onclick="closeCyberAlert()" class="cyber-modal-close">×</button>
+      </div>
+      <div class="cyber-modal-body">
+        <div id="cyber-alert-message" style="color: white; font-size: 14px; text-align: center; line-height: 1.6;"></div>
+      </div>
+      <div class="cyber-modal-footer">
+        <button onclick="closeCyberAlert()" style="flex: 1; padding: 10px; border-radius: 6px; background: linear-gradient(135deg, #a855f7, #ec4899); border: none; color: white; font-size: 14px; cursor: pointer; transition: all 0.3s;" class="cyber-button hover:glow-purple">确定</button>
+      </div>
+    </div>
+  </div>
+  
+  <div id="cyber-confirm-overlay" style="display: none;" class="cyber-modal-overlay">
+    <div class="cyber-modal" style="width: 400px;">
+      <div class="cyber-modal-header">
+        <h3 class="cyber-modal-title">确认</h3>
+        <button onclick="closeCyberConfirm()" class="cyber-modal-close">×</button>
+      </div>
+      <div class="cyber-modal-body">
+        <div id="cyber-confirm-message" style="color: white; font-size: 14px; text-align: center; line-height: 1.6;"></div>
+      </div>
+      <div class="cyber-modal-footer">
+        <button onclick="cyberConfirmResult(false)" style="flex: 1; padding: 10px; border-radius: 6px; background: rgba(168, 85, 247, 0.2); border: 1px solid #a855f7; color: white; font-size: 14px; cursor: pointer; transition: all 0.3s;" class="cyber-button hover:glow-purple">取消</button>
+        <button onclick="cyberConfirmResult(true)" style="flex: 1; padding: 10px; border-radius: 6px; background: linear-gradient(135deg, #22c55e, #16a34a); border: none; color: white; font-size: 14px; cursor: pointer; transition: all 0.3s;" class="cyber-button hover:glow-green">确定</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    let scriptsData = [];
+    let logsData = [];
+    let cronTasksData = [];
+    let currentScriptId = null;
+    let editingScriptId = null;
+    let cyberConfirmCallback = null;
+    let runningScripts = {};
+    let runningPollInterval = null;
+    let completedScripts = new Set();
+    let lastRunningIds = new Set(); // 上一次轮询到的运行脚本ID
+    let lastLogCount = 0; // 上一次轮询时的日志数量
+
+
+
+    function startRunningPoll() {
+      if (runningPollInterval) clearInterval(runningPollInterval);
+      runningPollInterval = setInterval(() => {
+        fetch('/api/running').then(response => response.json()).then(result => {
+          if (result.success) {
+            const runningIds = new Set(result.data.map(r => r.scriptId));
+            let changed = false;
+
+            // 检查哪些脚本刚刚执行完成（从上一次运行变成现在不运行）
+            for (const id of lastRunningIds) {
+              if (!runningIds.has(id) && !completedScripts.has(id)) {
+                const script = scriptsData.find(s => s.id === id);
+                const scriptName = script ? script.name : '未知脚本';
+                showToast('脚本执行完成', `${scriptName} 已停止运行`);
+                completedScripts.add(id);
+                setTimeout(() => completedScripts.delete(id), 180000);
+              }
+            }
+
+            // 更新上次运行状态
+            lastRunningIds = runningIds;
+
+            for (const id in runningScripts) {
+              if (!runningIds.has(id)) {
+                delete runningScripts[id];
+                changed = true;
+              }
+            }
+
+            result.data.forEach(r => {
+              if (!runningScripts[r.scriptId]) {
+                runningScripts[r.scriptId] = true;
+                changed = true;
+              }
+            });
+
+            if (changed) {
+              renderInvokeCards();
+              renderCronTasks(cronTasksData);
+            }
+          }
+        }).catch(() => {});
+
+        // 同时刷新定时任务列表（获取最新的任务状态）
+        if (cronTasksData && cronTasksData.length > 0) {
+          fetch('/api/cron/tasks').then(response => response.json()).then(tasks => {
+            cronTasksData = tasks;
+            renderCronTasks(tasks);
+          }).catch(() => {});
+        }
+
+        // 检查日志是否有新的执行记录（用于快速执行完成的脚本）
+        fetch('/api/logs').then(response => response.json()).then(logs => {
+          if (logs.length > lastLogCount) {
+            const newLogs = logs.slice(lastLogCount);
+            newLogs.forEach(log => {
+              if (log.exitCode !== null && !completedScripts.has(log.scriptId)) {
+                showToast('脚本执行完成', `${log.scriptName} 已停止运行`);
+                completedScripts.add(log.scriptId);
+                setTimeout(() => completedScripts.delete(log.scriptId), 180000);
+              }
+            });
+          }
+          lastLogCount = logs.length;
+        }).catch(() => {});
+      }, 2000);
+    }
+    
+    function cyberAlert(message) {
+      const overlay = document.getElementById('cyber-alert-overlay');
+      const messageEl = document.getElementById('cyber-alert-message');
+      messageEl.textContent = message;
+      overlay.style.display = 'flex';
+    }
+    
+    function closeCyberAlert() {
+      const overlay = document.getElementById('cyber-alert-overlay');
+      overlay.style.display = 'none';
+    }
+    
+    function cyberConfirm(message, callback) {
+      const overlay = document.getElementById('cyber-confirm-overlay');
+      const messageEl = document.getElementById('cyber-confirm-message');
+      messageEl.textContent = message;
+      cyberConfirmCallback = callback;
+      overlay.style.display = 'flex';
+    }
+    
+    function closeCyberConfirm() {
+      const overlay = document.getElementById('cyber-confirm-overlay');
+      overlay.style.display = 'none';
+      cyberConfirmCallback = null;
+    }
+    
+    function cyberConfirmResult(result) {
+      const callback = cyberConfirmCallback;
+      closeCyberConfirm();
+      if (callback) {
+        callback(result);
+      }
+    }
+    
+    async function loadScripts() {
+      try {
+        const response = await fetch('/api/scripts');
+        scriptsData = await response.json();
+        renderScripts();
+        renderInvokeCards();
+        updateScriptSelects();
+      } catch (error) {
+        console.error('加载脚本失败:', error);
+      }
+    }
+    
+    function renderScripts() {
+      const container = document.getElementById('script-list');
+      if (!container) return;
+      
+      if (scriptsData.length === 0) {
+        container.innerHTML = '<div style="text-align: center; color: #6b7280; padding: 40px;">暂无脚本，点击上方按钮添加</div>';
+        return;
+      }
+      
+      container.innerHTML = `
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px;">
+          ${scriptsData.map(script => `
+            <div data-id="${script.id}" onclick="selectScript('${script.id}')" style="padding: 16px; border-radius: 8px; background: rgba(0, 0, 0, 0.3); border: 1px solid #2d1b4e; cursor: pointer; transition: all 0.2s; ${currentScriptId === script.id ? 'border-color: #a855f7; box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);' : ''}" class="${currentScriptId === script.id ? 'selected' : ''}">
+              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(6, 182, 212, 0.2)); display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                  ${getScriptIcon(script.ext)}
+                </div>
+                <div>
+                  <h3 style="color: white; font-weight: 500; font-size: 14px;">${script.name}</h3>
+                  <span style="padding: 2px 6px; border-radius: 4px; font-size: 10px; background: rgba(168, 85, 247, 0.2); color: #a855f7;">.${script.ext}</span>
+                </div>
+              </div>
+              <div style="color: #9ca3af; font-size: 12px; margin-bottom: 8px; word-break: break-all; line-height: 1.4;">${script.description || '-'}</div>
+              ${script.pythonEnv ? `<div style="color: #f5c842; font-size: 11px; padding: 4px 8px; border-radius: 4px; background: rgba(245, 200, 66, 0.1); display: inline-block;"><i class="fa-brands fa-python"></i> ${script.pythonEnv}</div>` : ''}
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+    
+    function getScriptIcon(ext) {
+      const icons = {
+        ps1: '<i class="fa-brands fa-windows"></i>',
+        py: '<i class="fa-brands fa-python" style="color: #f5c842; font-size: 28px;"></i>',
+        js: '<i class="fa-brands fa-js"></i>',
+        mjs: '<i class="fa-brands fa-js"></i>',
+        cjs: '<i class="fa-brands fa-node-js"></i>',
+        bat: '<i class="fa-brands fa-windows"></i>',
+        cmd: '<i class="fa-brands fa-windows"></i>',
+        exe: '<i class="fa-brands fa-windows"></i>',
+        sh: '<i class="fa-brands fa-linux"></i>',
+        rb: '<i class="fa-brands fa-gem"></i>',
+        php: '<i class="fa-brands fa-php"></i>',
+        pl: '<i class="fa-solid fa-file-code"></i>',
+        vbs: '<i class="fa-brands fa-windows"></i>'
+      };
+      return icons[ext] || '<i class="fa-solid fa-file"></i>';
+    }
+    
+    function selectScript(id) {
+      currentScriptId = id;
+      renderScripts();
+      showScriptDetail(id);
+    }
+    
+    function showScriptDetail(id) {
+      const script = scriptsData.find(s => s.id === id);
+      const detail = document.getElementById('script-detail');
+      if (!script || !detail) return;
+      
+      detail.innerHTML = `
+        <p><strong>名称:</strong> ${script.name || '-'}</p>
+        <p><strong>路径:</strong> <span style="word-break: break-all;">${script.path || '-'}</span></p>
+        <p><strong>描述:</strong> ${script.description || '-'}</p>
+        <p><strong>类型:</strong> .${script.ext || '-'}</p>
+        ${script.pythonEnv ? `<p><strong>Python环境:</strong> ${script.pythonEnv}</p>` : ''}
+        <p><strong>创建时间:</strong> ${script.createdAt ? new Date(script.createdAt).toLocaleString('zh-CN') : (script.id ? new Date(parseInt(script.id)).toLocaleString('zh-CN') : '-')}</p>
+      `;
+    }
+    
+    function openCreateModal() {
+      editingScriptId = null;
+      document.getElementById('modal-title').textContent = '新增脚本';
+      document.getElementById('script-name').value = '';
+      document.getElementById('script-folder').value = '';
+      document.getElementById('script-ext').value = 'ps1';
+      loadPythonEnvs();
+      togglePythonEnv();
+      document.getElementById('modal-overlay').style.display = 'flex';
+    }
+    
+    let currentBrowsePath = '';
+    
+    function openFileBrowser() {
+      document.getElementById('file-browser-overlay').style.display = 'flex';
+      browseDrives();
+    }
+    
+    function closeFileBrowser() {
+      document.getElementById('file-browser-overlay').style.display = 'none';
+    }
+    
+    async function browseDrives() {
+      try {
+        const response = await fetch('/api/get-drives', { method: 'POST' });
+        const result = await response.json();
+        if (result.success) {
+          currentBrowsePath = '';
+          renderFileBrowserItems(result.drives);
+          document.getElementById('file-browser-path').textContent = '选择盘符';
+        }
+      } catch (err) {
+        console.error('获取盘符失败:', err);
+      }
+    }
+    
+    async function browseFiles(dirPath) {
+      try {
+        const response = await fetch('/api/browse-files', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ dirPath })
+        });
+        const result = await response.json();
+        if (result.success) {
+          currentBrowsePath = result.currentPath;
+          renderFileBrowserItems(result.items);
+          document.getElementById('file-browser-path').textContent = result.currentPath;
+        }
+      } catch (err) {
+        console.error('浏览文件失败:', err);
+      }
+    }
+    
+    function browseParent() {
+      if (!currentBrowsePath) return;
+      const parentPath = currentBrowsePath.replace(/\\$/, '').split('\\').slice(0, -1).join('\\');
+      if (parentPath) {
+        browseFiles(parentPath);
+      } else {
+        browseDrives();
+      }
+    }
+    
+    function renderFileBrowserItems(items) {
+      const list = document.getElementById('file-browser-list');
+      const supportedExts = ['ps1', 'py', 'js', 'bat', 'cmd', 'exe', 'sh', 'rb', 'php', 'pl', 'vbs', 'mjs', 'cjs'];
+      
+      const filteredItems = items.filter(item => {
+        if (item.isDirectory) return true;
+        if (item.isFile) {
+          return supportedExts.includes(item.extension);
+        }
+        return false;
+      });
+      
+      const sortedItems = filteredItems.sort((a, b) => {
+        if (a.isDirectory && !b.isDirectory) return -1;
+        if (!a.isDirectory && b.isDirectory) return 1;
+        return a.name.localeCompare(b.name);
+      });
+      
+      list.innerHTML = sortedItems.map(item => `
+        <div onclick="${item.isDirectory ? `browseFiles('${item.fullPath.replace(/\\/g, '\\\\')}')` : `selectFile('${item.fullPath.replace(/\\/g, '\\\\')}')`}" 
+             style="display: flex; align-items: center; padding: 8px 12px; border-radius: 4px; cursor: pointer; transition: all 0.2s; ${item.isDirectory ? 'color: #06b6d4;' : 'color: #a855f7;'}"
+             onmouseover="this.style.background='rgba(168, 85, 247, 0.1)'"
+             onmouseout="this.style.background='transparent'">
+          <i style="margin-right: 8px;" class="${item.isDirectory ? 'fa-solid fa-folder' : 'fa-solid fa-file'}"></i>
+          <span style="flex: 1;">${item.name}</span>
+          ${!item.isDirectory ? `<span style="font-size: 12px; color: #6b7280;">.${item.extension}</span>` : ''}
+        </div>
+      `).join('');
+    }
+    
+    function selectFile(filePath) {
+      document.getElementById('script-folder').value = filePath;
+      
+      const ext = filePath.split('.').pop().toLowerCase();
+      const supportedExts = ['ps1', 'py', 'js', 'bat', 'cmd', 'exe', 'sh', 'rb', 'php', 'pl', 'vbs', 'mjs', 'cjs'];
+      if (supportedExts.includes(ext)) {
+        document.getElementById('script-ext').value = ext;
+        togglePythonEnv();
+      }
+      
+      const fileName = filePath.split(/[\\/]/).pop();
+      const nameWithoutExt = fileName.replace(/\.[^/.]+$/, '');
+      if (!document.getElementById('script-name').value) {
+        document.getElementById('script-name').value = nameWithoutExt;
+      }
+      
+      closeFileBrowser();
+    }
+    
+    function closeModal() {
+      document.getElementById('modal-overlay').style.display = 'none';
+    }
+    
+    function togglePythonEnv() {
+      const ext = document.getElementById('script-ext').value;
+      const section = document.getElementById('python-env-section');
+      section.style.display = ext === 'py' ? 'block' : 'none';
+    }
+    
+    async function loadPythonEnvs(callback) {
+      try {
+        const response = await fetch('/api/settings');
+        const settings = await response.json();
+        const envs = settings.pythonEnvs || [];
+        const select = document.getElementById('script-python-env');
+        select.innerHTML = '<option value="python">默认 Python</option>';
+        envs.forEach(env => {
+          const option = document.createElement('option');
+          option.value = env.command;
+          option.textContent = env.name;
+          select.appendChild(option);
+        });
+        if (callback) callback();
+      } catch (e) {
+        console.error('加载Python环境失败:', e);
+      }
+    }
+    
+    async function submitScript() {
+      const name = document.getElementById('script-name').value.trim();
+      const folderPath = document.getElementById('script-folder').value.trim();
+      const description = document.getElementById('script-description').value.trim();
+      const ext = document.getElementById('script-ext').value;
+      
+      if (!name) {
+        cyberAlert('请输入脚本名称');
+        return;
+      }
+      
+      const data = { name, folderPath, description, ext };
+      if (ext === 'py') {
+        data.pythonEnv = document.getElementById('script-python-env').value;
+      }
+      
+      try {
+        if (editingScriptId) {
+          data.oldPath = editingScriptId;
+          data.newName = name;
+          data.newFolderPath = folderPath;
+          data.newDescription = description;
+          await fetch('/api/edit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+        } else {
+          await fetch('/api/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+        }
+        closeModal();
+        loadScripts();
+      } catch (error) {
+        console.error('保存脚本失败:', error);
+        cyberAlert('保存失败，请重试');
+      }
+    }
+    
+    function editScript() {
+      if (!currentScriptId) {
+        cyberAlert('请先选择一个脚本');
+        return;
+      }
+      
+      const script = scriptsData.find(s => s.id === currentScriptId);
+      if (!script) return;
+      
+      editingScriptId = currentScriptId;
+      document.getElementById('modal-title').textContent = '编辑脚本';
+      document.getElementById('script-name').value = script.name;
+      document.getElementById('script-folder').value = script.path;
+      document.getElementById('script-description').value = script.description || '';
+      document.getElementById('script-ext').value = script.ext;
+      loadPythonEnvs(() => {
+        if (script.pythonEnv) {
+          document.getElementById('script-python-env').value = script.pythonEnv;
+        }
+      });
+      togglePythonEnv();
+      document.getElementById('modal-overlay').style.display = 'flex';
+    }
+    
+    async function deleteScript() {
+      if (!currentScriptId) {
+        cyberAlert('请先选择一个脚本');
+        return;
+      }
+      
+      cyberConfirm('确定要删除这个脚本吗？', (result) => {
+        if (!result) return;
+        
+        fetch('/api/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scriptPath: currentScriptId })
+        }).then(() => {
+          currentScriptId = null;
+          document.getElementById('script-detail').innerHTML = '<p>选择脚本查看详情</p>';
+          loadScripts();
+        }).catch(error => {
+          console.error('删除脚本失败:', error);
+          cyberAlert('删除失败，请重试');
+        });
+      });
+    }
+    
+    function renderInvokeCards() {
+      const container = document.getElementById('invoke-script-list');
+      if (!container) return;
+      
+      if (scriptsData.length === 0) {
+        container.innerHTML = '<div style="text-align: center; color: #6b7280; padding: 40px;">暂无脚本，先去添加脚本</div>';
+        return;
+      }
+      
+      container.innerHTML = scriptsData.map(script => `
+        <div style="margin-bottom: 12px; padding: 16px; border-radius: 8px; background: rgba(0, 0, 0, 0.3); border: 1px solid #2d1b4e;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 24px;">${getScriptIcon(script.ext)}</span>
+              <div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <h3 style="color: white; font-weight: 500;">${script.name}</h3>
+                  ${runningScripts[script.id] ? '<span style="display: flex; align-items: center; gap: 4px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite;"></span><span style="color: #22c55e; font-size: 11px;">正在运行</span></span>' : ''}
+                </div>
+                <p style="color: #6b7280; font-size: 12px; word-break: break-all;">${script.description || script.path || '-'}</p>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button onclick="executeScript('${script.id}', event)" ${runningScripts[script.id] ? 'disabled' : ''} style="padding: 8px 16px; border-radius: 6px; background: linear-gradient(135deg, #a855f7, #ec4899); border: none; color: white; font-size: 12px; cursor: pointer; transition: all 0.3s;" class="cyber-button hover:glow-purple">
+                ${runningScripts[script.id] ? '执行中...' : '执行'}
+              </button>
+              <button onclick="stopScript('${script.id}')" style="padding: 8px 16px; border-radius: 6px; background: linear-gradient(135deg, #ef4444, #f97316); border: none; color: white; font-size: 12px; cursor: pointer; transition: all 0.3s;" class="cyber-button hover:glow-red">
+                停止
+              </button>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="color: #6b7280; font-size: 11px;">${script.ext.toUpperCase()} 脚本</span>
+              ${script.pythonEnv ? `<span style="color: #f5c842; font-size: 11px; padding: 2px 6px; border-radius: 4px; background: rgba(245, 200, 66, 0.1);"><i class="fa-brands fa-python"></i> ${script.pythonEnv}</span>` : ''}
+            </div>
+            <button onclick="addCronTask('${script.id}')" style="padding: 4px 12px; border-radius: 4px; background: rgba(168, 85, 247, 0.2); border: 1px solid #a855f7; color: white; font-size: 11px; cursor: pointer;">
+              ⏰ 添加定时任务
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    async function executeScript(id, event) {
+      const script = scriptsData.find(s => s.id === id);
+      if (!script) return;
+      
+      const button = event.currentTarget;
+      button.textContent = '执行中...';
+      button.disabled = true;
+      runningScripts[id] = true;
+      
+      try {
+        const response = await fetch('/api/run', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scriptPath: id, pythonEnv: script.pythonEnv })
+        });
+        const result = await response.json();
+        
+        if (result.success) {
+          cyberAlert(`脚本已启动！`);
+        } else {
+          cyberAlert(`脚本启动失败！\n错误: ${result.error || '未知错误'}`);
+          button.textContent = '执行';
+          button.disabled = false;
+          delete runningScripts[id];
+        }
+        
+        loadLogs();
+      } catch (error) {
+        console.error('执行脚本失败:', error);
+        cyberAlert('执行失败，请检查日志');
+        button.textContent = '执行';
+        button.disabled = false;
+        delete runningScripts[id];
+      }
+    }
+    
+    async function stopScript(id) {
+      const script = scriptsData.find(s => s.id === id);
+      if (!script) return;
+      
+      const stopButton = event.target;
+      
+      cyberConfirm(`确定要停止脚本 "${script.name}" 吗？`, (result) => {
+        if (!result) return;
+        
+        const originalText = stopButton.textContent;
+        stopButton.textContent = '停止中...';
+        stopButton.disabled = true;
+        
+        fetch('/api/stop', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scriptPath: id })
+        }).then(response => response.json()).then(result => {
+          if (result.success) {
+            cyberAlert(`脚本已停止！`);
+            delete runningScripts[id];
+            renderInvokeCards();
+            renderCronTasks(cronTasksData);
+            
+            const executeButton = stopButton.previousElementSibling;
+            if (executeButton) {
+              executeButton.textContent = '执行';
+              executeButton.disabled = false;
+            }
+          } else {
+            cyberAlert(`停止失败！\n错误: ${result.error || '未知错误'}`);
+          }
+          
+          loadLogs();
+        }).catch(error => {
+          console.error('停止脚本失败:', error);
+          cyberAlert('停止失败，请检查日志');
+        }).finally(() => {
+          stopButton.textContent = originalText;
+          stopButton.disabled = false;
+        });
+      });
+    }
+    
+    async function loadLogs() {
+      try {
+        const response = await fetch('/api/logs');
+        logsData = await response.json();
+        lastLogCount = logsData.length;
+        renderLogs();
+      } catch (error) {
+        console.error('加载日志失败:', error);
+      }
+    }
+    
+    function renderLogs() {
+      const container = document.getElementById('logs-container');
+      if (!container) return;
+      
+      const select = document.getElementById('log-script-select');
+      const filterName = select ? select.value : '';
+      
+      const filtered = filterName ? logsData.filter(l => l.scriptName === filterName) : logsData;
+      const reversed = [...filtered].reverse();
+      
+      if (reversed.length === 0) {
+        container.innerHTML = '<div style="text-align: center; color: #6b7280; padding: 40px;">暂无执行日志</div>';
+        return;
+      }
+      
+      container.innerHTML = reversed.map(log => `
+        <div style="margin-bottom: 12px; padding: 16px; border-radius: 8px; background: rgba(0, 0, 0, 0.3); border: 1px solid #2d1b4e;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="color: white; font-weight: 500;">${log.scriptName}</span>
+              <span style="padding: 2px 8px; border-radius: 4px; font-size: 11px; ${log.success ? 'background: rgba(34, 197, 94, 0.2); color: #22c55e;' : 'background: rgba(239, 68, 68, 0.2); color: #ef4444;'}">${log.success ? '成功' : '失败'}</span>
+              <span style="color: #6b7280; font-size: 12px;">退出码: ${log.exitCode}</span>
+            </div>
+            <span style="color: #6b7280; font-size: 11px;">${new Date(log.timestamp).toLocaleString('zh-CN')}</span>
+          </div>
+          <div style="background: rgba(0, 0, 0, 0.3); border-radius: 4px; padding: 8px; font-family: 'Consolas', monospace; font-size: 12px; color: #9ca3af; max-height: 120px; overflow-y: auto; white-space: pre-wrap; word-break: break-all;">${log.output || '无输出'}</div>
+        </div>
+      `).join('');
+    }
+    
+    async function clearLogs() {
+      cyberConfirm('确定要清空所有执行日志吗？', (result) => {
+        if (!result) return;
+        
+        fetch('/api/logs/clear', { method: 'POST' }).then(() => {
+          logsData = [];
+          renderLogs();
+        }).catch(e => {
+          console.error('清空日志失败:', e);
+        });
+      });
+    }
+    
+    async function loadCronTasks() {
+      try {
+        const response = await fetch('/api/cron/tasks');
+        const tasks = await response.json();
+        cronTasksData = tasks;
+        renderCronTasks(tasks);
+      } catch (e) {
+        console.error('加载定时任务失败:', e);
+      }
+    }
+    
+    function renderCronTasks(tasks) {
+      const pageContainer = document.getElementById('cron-page-list');
+      
+      if (!tasks || tasks.length === 0) {
+        if (pageContainer) {
+          pageContainer.innerHTML = '<div style="color: #6b7280; font-size: 14px; text-align: center; padding: 40px;">暂无定时任务，去脚本调用页面添加</div>';
+        }
+        return;
+      }
+      
+      if (pageContainer) {
+        pageContainer.innerHTML = tasks.map(task => {
+          const script = scriptsData.find(s => s.id === task.scriptId);
+          const scriptName = script ? script.name : '未知脚本';
+          const typeLabel = task.type === 'interval' ? '间隔执行' : task.type === 'cron' ? 'Cron' : '延迟执行';
+          const typeDesc = task.type === 'interval' ? `每 ${task.interval} 分钟执行一次` : 
+                          task.type === 'cron' ? `Cron: ${task.expression}` : 
+                          `延迟 ${task.delay} 分钟后执行`;
+          const isRunning = runningScripts[task.scriptId];
+          return `
+            <div style="margin-bottom: 12px; padding: 16px; border-radius: 8px; background: rgba(0, 0, 0, 0.3); border: 1px solid #2d1b4e;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <span style="color: white; font-weight: 500;">${scriptName}</span>
+                  <span style="padding: 2px 8px; border-radius: 4px; font-size: 11px; background: rgba(168, 85, 247, 0.2); color: #a855f7;">${typeLabel}</span>
+                  ${isRunning ? '<span style="display: flex; align-items: center; gap: 4px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite;"></span><span style="color: #22c55e; font-size: 11px;">正在运行</span></span>' : ''}
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  <button onclick="toggleCronStatus('${task.id}')" style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.3s; ${task.enabled ? 'background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(22, 163, 74, 0.2)); border: 1px solid #22c55e; color: #22c55e;' : 'background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(220, 38, 38, 0.2)); border: 1px solid #ef4444; color: #ef4444;'}">
+                    ${task.enabled ? '<span style="width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite;"></span>' : '<span style="width: 8px; height: 8px; border-radius: 50%; background: #ef4444;"></span>'}
+                    ${task.enabled ? '运行中' : '已停止'}
+                  </button>
+                  <button onclick="deleteCronTask('${task.id}')" style="padding: 6px 14px; border-radius: 6px; background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #ef4444; font-size: 12px; cursor: pointer; transition: all 0.3s;">删除</button>
+                </div>
+              </div>
+              <div style="color: #6b7280; font-size: 12px;">
+                ${typeDesc}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+    
+    async function addCronTask(scriptId) {
+      document.getElementById('cron-script-select').value = scriptId;
+      // 加载设置中的cron表达式列表
+      try {
+        const response = await fetch('/api/settings');
+        const settings = await response.json();
+        const cronExprs = settings.cronExpressions || [];
+        updateCronExpressionList(cronExprs);
+      } catch (e) {
+        console.error('加载cron表达式失败:', e);
+      }
+      document.getElementById('cron-modal-overlay').style.display = 'flex';
+    }
+    
+    function closeCronModal() {
+      document.getElementById('cron-modal-overlay').style.display = 'none';
+    }
+    
+    function toggleCronType() {
+      const type = document.getElementById('cron-type').value;
+      document.getElementById('cron-interval-section').style.display = type === 'interval' ? 'block' : 'none';
+      document.getElementById('cron-expression-section').style.display = type === 'cron' ? 'block' : 'none';
+      document.getElementById('cron-delay-section').style.display = type === 'delay' ? 'block' : 'none';
+    }
+    
+    async function saveCronTask() {
+      const scriptId = document.getElementById('cron-script-select').value;
+      const type = document.getElementById('cron-type').value;
+      
+      if (!scriptId) {
+        cyberAlert('请选择脚本');
+        return;
+      }
+      
+      const data = { scriptId, type };
+      if (type === 'interval') {
+        const interval = parseInt(document.getElementById('cron-interval').value);
+        if (!interval || interval < 1) {
+          cyberAlert('请输入有效的间隔时间');
+          return;
+        }
+        data.interval = interval;
+      } else if (type === 'cron') {
+        const expression = document.getElementById('cron-expression').value.trim();
+        if (!expression) {
+          cyberAlert('请输入Cron表达式');
+          return;
+        }
+        data.expression = expression;
+      } else if (type === 'delay') {
+        const delay = parseInt(document.getElementById('cron-delay').value);
+        if (!delay || delay < 1) {
+          cyberAlert('请输入有效的延迟时间');
+          return;
+        }
+        data.delay = delay;
+      }
+      
+      try {
+        await fetch('/api/cron/tasks', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        closeCronModal();
+        loadCronTasks();
+      } catch (e) {
+        console.error('保存定时任务失败:', e);
+        cyberAlert('保存失败');
+      }
+    }
+    
+    async function toggleCronStatus(id) {
+      try {
+        await fetch(`/api/cron/tasks/${id}/toggle`, { method: 'POST' });
+        loadCronTasks();
+      } catch (e) {
+        console.error('切换定时任务状态失败:', e);
+      }
+    }
+    
+    async function deleteCronTask(id) {
+      cyberConfirm('确定要删除这个定时任务吗？', (result) => {
+        if (!result) return;
+        
+        fetch(`/api/cron/tasks/${id}`, { method: 'DELETE' }).then(() => {
+          loadCronTasks();
+        }).catch(e => {
+          console.error('删除定时任务失败:', e);
+        });
+      });
+    }
+    
+    async function loadSettings() {
+      try {
+        const response = await fetch('/api/settings');
+        const settings = await response.json();
+        const envs = settings.pythonEnvs || [];
+        document.getElementById('settings-python-envs').value = envs.map(e => `${e.name}|${e.command}`).join('\n');
+        
+        const cronExprs = settings.cronExpressions || [];
+        document.getElementById('settings-cron-exprs').value = cronExprs.map(e => `${e.expression}|${e.description}`).join('\n');
+        
+        updateCronExpressionList(cronExprs);
+      } catch (e) {
+        console.error('加载设置失败:', e);
+      }
+    }
+    
+    function updateCronExpressionList(expressions) {
+      const datalist = document.getElementById('cron-expression-list');
+      if (!datalist) return;
+      
+      datalist.innerHTML = expressions.map(e => 
+        `<option value="${e.expression}">${e.expression} - ${e.description}</option>`
+      ).join('');
+    }
+    
+    async function saveSettings() {
+      const text = document.getElementById('settings-python-envs').value;
+      const pythonEnvs = text.split('\n')
+        .map(line => line.trim())
+        .filter(line => line)
+        .map(line => {
+          const parts = line.split('|');
+          return { name: parts[0] || '', command: parts[1] || '' };
+        });
+      
+      const cronText = document.getElementById('settings-cron-exprs').value;
+      const cronExpressions = cronText.split('\n')
+        .map(line => line.trim())
+        .filter(line => line)
+        .map(line => {
+          const parts = line.split('|');
+          return { expression: parts[0] || '', description: parts[1] || '' };
+        });
+      
+      try {
+        await fetch('/api/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pythonEnvs, cronExpressions })
+        });
+        
+        updateCronExpressionList(cronExpressions);
+        
+        const message = document.getElementById('settings-message');
+        message.textContent = '配置保存成功！';
+        message.style.background = 'rgba(34, 197, 94, 0.2)';
+        message.style.color = '#22c55e';
+        message.style.display = 'block';
+        
+        setTimeout(() => {
+          message.style.display = 'none';
+        }, 3000);
+      } catch (e) {
+        console.error('保存设置失败:', e);
+        const message = document.getElementById('settings-message');
+        message.textContent = '保存失败，请重试';
+        message.style.background = 'rgba(239, 68, 68, 0.2)';
+        message.style.color = '#ef4444';
+        message.style.display = 'block';
+      }
+    }
+    
+    function updateScriptSelects() {
+      const logSelect = document.getElementById('log-script-select');
+      const cronSelect = document.getElementById('cron-script-select');
+      
+      if (logSelect) {
+        const currentValue = logSelect.value;
+        logSelect.innerHTML = '<option value="">所有脚本</option>' + 
+          scriptsData.map(s => `<option value="${s.name}">${s.name}</option>`).join('');
+        logSelect.value = currentValue;
+      }
+      
+      if (cronSelect) {
+        cronSelect.innerHTML = '<option value="">请选择脚本</option>' + 
+          scriptsData.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+      }
+    }
+    
+    function exitApp() {
+      cyberConfirm('确定要退出程序吗？', (result) => {
+        if (result) {
+          fetch('/api/exit', {
+            method: 'POST'
+          }).then(() => {
+            cyberAlert('程序已退出', 2000);
+            setTimeout(() => {
+              window.close();
+            }, 2000);
+          }).catch(err => {
+            console.error('退出失败:', err);
+            cyberAlert('退出失败，请手动关闭');
+          });
+        }
+      });
+    }
+    
+    function switchNav(id) {
+      const navButtons = ['manage', 'invoke', 'logs', 'settings', 'cron'];
+      navButtons.forEach(btnId => {
+        const btn = document.getElementById(`nav-${btnId}`);
+        if (btn) {
+          if (btnId === id) {
+            btn.style.background = 'rgba(168, 85, 247, 0.2)';
+            btn.style.color = 'white';
+          } else {
+            btn.style.background = 'transparent';
+            btn.style.color = '#9ca3af';
+          }
+        }
+      });
+      
+      switchTab(id);
+    }
+    
+    function switchTab(id) {
+      const tabButtons = ['manage', 'invoke', 'logs', 'settings', 'cron'];
+      tabButtons.forEach(btnId => {
+        const btn = document.getElementById(`tab-${btnId}`);
+        if (btn) {
+          if (btnId === id) {
+            btn.style.background = 'rgba(168, 85, 247, 0.2)';
+            btn.style.color = 'white';
+            btn.style.borderBottom = '2px solid #a855f7';
+          } else {
+            btn.style.background = 'transparent';
+            btn.style.color = '#9ca3af';
+            btn.style.borderBottom = 'none';
+          }
+        }
+      });
+      
+      // 同步更新侧边菜单样式
+      tabButtons.forEach(btnId => {
+        const navBtn = document.getElementById(`nav-${btnId}`);
+        if (navBtn) {
+          if (btnId === id) {
+            navBtn.style.background = 'rgba(168, 85, 247, 0.2)';
+            navBtn.style.color = 'white';
+          } else {
+            navBtn.style.background = 'transparent';
+            navBtn.style.color = '#9ca3af';
+          }
+        }
+      });
+      
+      document.getElementById('page-manage').style.display = id === 'manage' ? 'flex' : 'none';
+      document.getElementById('page-invoke').style.display = id === 'invoke' ? 'flex' : 'none';
+      document.getElementById('page-logs').style.display = id === 'logs' ? 'flex' : 'none';
+      document.getElementById('page-settings').style.display = id === 'settings' ? 'flex' : 'none';
+      document.getElementById('page-cron').style.display = id === 'cron' ? 'flex' : 'none';
+      
+      if (id === 'invoke') {
+        renderInvokeCards();
+      }
+      if (id === 'logs') {
+        loadLogs();
+      }
+      if (id === 'settings') {
+        loadSettings();
+      }
+      if (id === 'cron') {
+        loadCronTasks();
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      loadScripts();
+      loadLogs();
+      startRunningPoll();
+    });
+
+    // 通知提示函数
+    function showToast(title, message, duration = 3000) {
+      const existingToast = document.getElementById('cyber-toast-container');
+      if (existingToast) existingToast.remove();
+
+      const toast = document.createElement('div');
+      toast.id = 'cyber-toast-container';
+      toast.className = 'cyber-toast';
+      toast.innerHTML = `
+        <div class="cyber-toast-title">${title}</div>
+        <div class="cyber-toast-message">${message}</div>
+        <div class="cyber-toast-time">${new Date().toLocaleTimeString()}</div>
+      `;
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.add('hiding');
+        setTimeout(() => toast.remove(), 300);
+      }, duration);
+    }
+  </script>
+</body>
+</html>
